@@ -56,7 +56,11 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
             carbonFee = carbonDifference * malusComponentLow
             vehicleTax += carbonFee
         if (dieselFuel):
-            vehicleTax = carbonOutput * dieselFuelFactor
+            if (modelYear >= dieselComponentLevel):
+                dieselComponent = dieselComponentLow
+            else:
+                dieselComponent = dieselComponentHigh
+            vehicleTax += (carbonOutput * dieselFuelFactor) + dieselComponentHigh
     else:
         # Check if carbon output is above current level
         carbonDifference = carbonOutput - carbonComponentLevel
@@ -67,7 +71,7 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
                 carbonFee = carbonDifference * carbonComponent
             vehicleTax += carbonFee
         if (dieselFuel):
-            vehicleTax *= vehicleTax * dieselMultFactor
+            vehicleTax = vehicleTax * dieselMultFactor
 
     # Return output
     return vehicleTax
@@ -76,14 +80,15 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
 carbonInput = int(input("Antal gram koldioxid per km: "))
 modelYearInput = int(input("Bilens årsmodell: "))
 dieselInput = str(input("Är bilen dieseldriven (j/n)? "))
-ecoFuelInput = str(input("Är bilen driven av E85 eller gas (j/n)? "))
-
 # Check if diesel driven
 if (dieselInput == 'j' or dieselInput == 'J'):
     isDiesel = True
-# Check if eco fuel driven
-if (ecoFuelInput == 'j' or ecoFuelInput == 'J'):
-    isEcoFuel = True
+else:
+    ecoFuelInput = str(input("Är bilen driven av E85 eller gas (j/n)? "))
+    # Check if eco fuel driven
+    if (ecoFuelInput == 'j' or ecoFuelInput == 'J'):
+        isEcoFuel = True
+
 
 # Output result
 print("Årsskatt: " + str(VehicleTaxCalculation(carbonInput,modelYearInput,isDiesel,isEcoFuel)) + " kr")
