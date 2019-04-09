@@ -55,6 +55,8 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
             carbonDifference = carbonOutput - malusComponentLevelLow
             carbonFee = carbonDifference * malusComponentLow
             vehicleTax += carbonFee
+        if (dieselFuel):
+            vehicleTax = carbonOutput * dieselFuelFactor
     else:
         # Check if carbon output is above current level
         carbonDifference = carbonOutput - carbonComponentLevel
@@ -64,6 +66,8 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
             else:
                 carbonFee = carbonDifference * carbonComponent
             vehicleTax += carbonFee
+        if (dieselFuel):
+            vehicleTax *= vehicleTax * dieselMultFactor
 
     # Return output
     return vehicleTax
