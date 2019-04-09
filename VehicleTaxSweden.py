@@ -55,12 +55,13 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
             carbonDifference = carbonOutput - malusComponentLevelLow
             carbonFee = carbonDifference * malusComponentLow
             vehicleTax += carbonFee
+        # Check if diesel is used and if so, ad additional taxes
         if (dieselFuel):
             if (modelYear >= dieselComponentLevel):
                 dieselComponent = dieselComponentLow
             else:
                 dieselComponent = dieselComponentHigh
-            vehicleTax += (carbonOutput * dieselFuelFactor) + dieselComponentHigh
+            vehicleTax += (carbonOutput * dieselFuelFactor) + dieselComponent
     else:
         # Check if carbon output is above current level
         carbonDifference = carbonOutput - carbonComponentLevel
@@ -80,7 +81,7 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
 carbonInput = int(input("Antal gram koldioxid per km: "))
 modelYearInput = int(input("Bilens årsmodell: "))
 dieselInput = str(input("Är bilen dieseldriven (j/n)? "))
-# Check if diesel driven
+# Check if diesel driven and if so, skip question if eco fuel driven
 if (dieselInput == 'j' or dieselInput == 'J'):
     isDiesel = True
 else:
