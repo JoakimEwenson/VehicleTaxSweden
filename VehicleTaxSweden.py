@@ -5,8 +5,6 @@
 # Author: Joakim Ewenson <joakim@ewenson.se>
 # Date: 2019-04-08
 
-# Import necesary files
-
 # Set up default values for the calculation
 isEcoFuel = False
 isDiesel = False
@@ -74,6 +72,10 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
         # Check if diesel is used and if so, ad additional taxes
         if (dieselFuel):
             vehicleTax = (vehicleTax * dieselMultFactor) + dieselComponentLow
+
+    # Check if calculated tax is below the basic fee
+    if (vehicleTax < basicFee):
+        vehicleTax = basicFee
 
     # Return output
     return int(vehicleTax)
