@@ -43,7 +43,7 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
         if (carbonOutput > malusComponentLevelHigh):
             # Calculate the difference in grams carbon per km
             malusDifferenceHigh = carbonOutput - malusComponentLevelHigh
-            malusDifferenceLow = (carbonOutput - malusDifferenceHigh) - malusComponentLow
+            malusDifferenceLow = (carbonOutput - malusDifferenceHigh) - malusComponentLevelLow
 
             # Calculate the cost of malus tax
             malusTaxHigh = malusDifferenceHigh * malusComponentHigh
