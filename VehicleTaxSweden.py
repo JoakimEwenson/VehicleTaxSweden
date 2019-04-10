@@ -71,6 +71,7 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
             else:
                 carbonFee = carbonDifference * carbonComponent
             vehicleTax += carbonFee
+        # Check if diesel is used and if so, ad additional taxes
         if (dieselFuel):
             vehicleTax = vehicleTax * dieselMultFactor
 
