@@ -76,7 +76,7 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
             vehicleTax = (vehicleTax * dieselMultFactor) + dieselComponentLow
 
     # Return output
-    return vehicleTax
+    return int(vehicleTax)
 
 # Get user input
 carbonInput = int(input("Antal gram koldioxid per km: "))
