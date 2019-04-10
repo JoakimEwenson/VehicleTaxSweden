@@ -75,6 +75,10 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
         if (dieselFuel):
             vehicleTax = (vehicleTax * dieselMultFactor) + dieselComponentLow
 
+    # Check if calculated tax is below the basic fee
+    if (vehicleTax < basicFee):
+        vehicleTax = basicFee
+
     # Return output
     return int(vehicleTax)
 
