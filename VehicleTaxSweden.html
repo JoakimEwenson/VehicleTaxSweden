@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="sv">
+
+<title>Fordonsskatteuträkning</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="VehicleTaxSweden.js"></script>
+
+<script>
+function doTaxCalculation() {
+    var userCarbonInput, userModelYearInput, taxOutput;
+    userCarbonInput = document.getElementById('co2output').textContent;
+    userModelYearInput = document.getElementById('modelYear').textContent;
+    taxOutput = document.getElementById('vehicleTax');
+    taxOutput.textContent = VehicleTaxCalculation(userCarbonInput,userModelYearInput,true,false,false);
+}
+</script>
+
+<body class="w3-small w3-light-gray">
+
+<div class="w3-container">
+    <form class="w3-card w3-white w3-padding w3-margin">
+        <h3>Fordonsuppgifter</h3>
+        <p>
+            <label><b>Antal gram co2 per kilometer</b></label>
+            <input class="w3-input w3-border" type="number" name="co2output" id="co2output" placeholder="gram koldioxid per kilometer" required>
+        </p>
+        <p>
+            <label><b>Fordonets tillverkningsår</b></label>
+            <input class="w3-input w3-border" type="number" name="modelYear" id="modelYear" placeholder="YYYY" required>
+        </p>
+        <p>
+            <input class="w3-radio" type="radio" name="fuel" value="bensin" checked>
+            <label>Bensin</label>
+        </p>
+        <p>
+            <input class="w3-radio" type="radio" name="fuel" value="diesel">
+            <label>Diesel</label>
+        </p>
+        <p>
+            <input class="w3-radio" type="radio" name="fuel" value="eco">
+            <label>E85/CNG eller annat miljövänligt alternativ</label>
+        </p>
+        <p style="margin-left: auto; margin-right: auto;">
+            <button class="w3-btn w3-light-gray">Räkna ut</button>
+        </p>
+    </form>
+
+    <div class="w3-card w3-white w3-padding w3-margin">
+        <h3>Fordonsskatt</h3>
+        <p>
+            <b>Årsskatt: </b><span id="vehicleTax"></span>
+        </p>
+    </div>
+</div>
+
+<script>
+document.getElementById('co2output').addEventListener('keyup',);
+document.getElementById('co2output').addEventListener('blur',);
+</script>
+
+</body>
+</html>
