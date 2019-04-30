@@ -36,42 +36,54 @@ function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFu
     vehicleTax = basicFee;
 
     // Check if vehicle is under the new bonus/malus model
-    if (isBonusMalus) {
-        // Get the difference between vehicle carbon output and allowed threshold
-        if (carbonOutput > malusComponentLevelHigh) {
-            // Initialize variables
-            var malusDifferenceHigh, malusDifferenceLow, malusTaxHigh, malusTaxLow, carbonDifference, carbonFee;
+    if (modelYear >= malusModelYear) {
+        if (isBonusMalus) {
+            // Get the difference between vehicle carbon output and allowed threshold
+            if (carbonOutput > malusComponentLevelHigh) {
+                // Initialize variables
+                var malusDifferenceHigh, malusDifferenceLow, malusTaxHigh, malusTaxLow, carbonDifference, carbonFee;
 
-            // Get the difference between output and high level
-            malusDifferenceHigh = carbonOutput - malusComponentLevelHigh;
-            malusDifferenceLow = (carbonOutput - malusDifferenceHigh) - malusComponentLevelLow;
+                // Get the difference between output and high level
+                malusDifferenceHigh = carbonOutput - malusComponentLevelHigh;
+                malusDifferenceLow = (carbonOutput - malusDifferenceHigh) - malusComponentLevelLow;
 
-            // Calculate the fee
-            malusTaxHigh = malusDifferenceHigh * malusComponentFeeHigh;
-            malusTaxLow = malusDifferenceLow * malusComponentFeeLow;
+                // Calculate the fee
+                malusTaxHigh = malusDifferenceHigh * malusComponentFeeHigh;
+                malusTaxLow = malusDifferenceLow * malusComponentFeeLow;
 
-            vehicleTax += malusTaxHigh;
-            vehicleTax += malusTaxLow;
+                vehicleTax += malusTaxHigh;
+                vehicleTax += malusTaxLow;
+            }
+            else {
+                carbonDifference = carbonOutput - malusComponentLevelLow;
+                carbonFee = carbonDifference * malusComponentFeeLow;
+
+                vehicleTax += carbonFee;
+            }
         }
-        else {
-            carbonDifference = carbonOutput - malusComponentLevelLow;
-            carbonFee = carbonDifference * malusComponentFeeLow;
-
-            vehicleTax += carbonFee;
+        // Check if eco fuel is used and if so, calculate lower taxes
+        if (isEcoFuel) {
+            vehicleTax += (carbonOutput - carbonComponentThreshold) * carbonComponentEco;
         }
         // Check if diesel is used and if so, add additional taxes
         if (isDieselFuel) {
             // Initialize variables
             var dieselComponentFee;
+            if (isBonusMalus == false) {
+                // Check carbon output above threshold
+                if (carbonOutput > carbonComponentThreshold) {
+                    vehicleTax += (carbonOutput - carbonComponentThreshold) * carbonComponent;
+                }
+            }
+            // Check if vehicle is newer than current level
             if (modelYear >= dieselComponentYear) {
                 dieselComponentFee = dieselComponentFeeLow
             }
             else {
                 dieselComponentFee = dieselComponentFeeHigh
             }
-            vehicleTax = (vehicleTax * dieselMultFactor) + dieselComponentFee
+            vehicleTax += (carbonOutput * dieselFuelFactor) + dieselComponentFee;
         }
-
     }
 
     // If not under the new system, calculate the tax according to old model

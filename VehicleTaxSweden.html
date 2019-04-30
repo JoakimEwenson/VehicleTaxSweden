@@ -7,57 +7,110 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="VehicleTaxSweden.js"></script>
 
-<script>
-function doTaxCalculation() {
-    var userCarbonInput, userModelYearInput, taxOutput;
-    userCarbonInput = document.getElementById('co2output').textContent;
-    userModelYearInput = document.getElementById('modelYear').textContent;
-    taxOutput = document.getElementById('vehicleTax');
-    taxOutput.textContent = VehicleTaxCalculation(userCarbonInput,userModelYearInput,true,false,false);
-}
-</script>
-
 <body class="w3-small w3-light-gray">
 
 <div class="w3-container">
-    <form class="w3-card w3-white w3-padding w3-margin">
+    <!-- This section is the form for inputting details regarding the vehicle -->
+    <div class="w3-card w3-white w3-padding w3-margin">
         <h3>Fordonsuppgifter</h3>
         <p>
             <label><b>Antal gram co2 per kilometer</b></label>
             <input class="w3-input w3-border" type="number" name="co2output" id="co2output" placeholder="gram koldioxid per kilometer" required>
         </p>
         <p>
-            <label><b>Fordonets tillverkningsår</b></label>
+            <label><b>Fordonets modellår</b></label>
             <input class="w3-input w3-border" type="number" name="modelYear" id="modelYear" placeholder="YYYY" required>
         </p>
         <p>
-            <input class="w3-radio" type="radio" name="fuel" value="bensin" checked>
+            <label><b>Bränsletyp</b></label>
+        </p>
+        <p>
+            <input class="w3-radio" type="radio" name="fuel" id="bensin" value="bensin" checked>
             <label>Bensin</label>
         </p>
         <p>
-            <input class="w3-radio" type="radio" name="fuel" value="diesel">
+            <input class="w3-radio" type="radio" name="fuel" id="diesel" value="diesel">
             <label>Diesel</label>
         </p>
         <p>
-            <input class="w3-radio" type="radio" name="fuel" value="eco">
+            <input class="w3-radio" type="radio" name="fuel" id="eco" value="eco">
             <label>E85/CNG eller annat miljövänligt alternativ</label>
         </p>
-        <p style="margin-left: auto; margin-right: auto;">
-            <button class="w3-btn w3-light-gray">Räkna ut</button>
-        </p>
-    </form>
+        <div class="w3-container" style="width:100px;margin-left: auto; margin-right: auto;">
+            <input type="submit" class="w3-btn w3-green" onclick="doTaxCalculation()" value="Räkna ut!">
+        </div>
+    </div>
 
-    <div class="w3-card w3-white w3-padding w3-margin">
+    <!-- Results will be displayed after calculations -->
+    <div class="w3-card w3-white w3-padding w3-margin" id="results" style="display: none;">
         <h3>Fordonsskatt</h3>
-        <p>
-            <b>Årsskatt: </b><span id="vehicleTax"></span>
-        </p>
+        <div class="w3-center" id="tableBonusMalus" style="display: none">
+            <h4 class="w3-text-dark-gray" style="text-transform:uppercase;">Första tre åren</h4>
+            <p class="w3-jumbo" id="vehicleTaxBonusMalus"></p>
+            <h4 class="w3-text-dark-gray" style="text-transform:uppercase;">Efterföljande år</h4>
+            <p class="w3-jumbo" id="vehicleTax"></p>
+        </div>
+        <div class="w3-center" id="tableVehicleTax" style="display: none">
+            <p class="w3-jumbo" id="vehicleTaxOld"></p>
+        </div>
     </div>
 </div>
 
+<!-- JS for the calculations -->
 <script>
-document.getElementById('co2output').addEventListener('keyup',);
-document.getElementById('co2output').addEventListener('blur',);
+function doTaxCalculation() {
+    // Set up variables
+    var userCarbonInput, userModelYearInput, taxOutput, taxOutputBonusMalus;
+    var isBonusMalus = false, isDiesel = false, isEcoFuel = false;
+    var vehicleTax, vehicleTaxBonusMalus;
+
+    // Bind page elements to variables
+    taxOutput = document.getElementById('vehicleTax');
+    taxOutputBonusMalus = document.getElementById('vehicleTaxBonusMalus');
+    taxOutputOld = document.getElementById('vehicleTaxOld');
+
+    // Get user input
+    userCarbonInput = parseInt(document.getElementById('co2output').value);
+    userModelYearInput = parseInt(document.getElementById('modelYear').value);
+
+    // Check type of fuel
+    if (document.getElementById('bensin').checked == true) {
+        isBonusMalus = true;
+    }
+    if (document.getElementById('diesel').checked == true) {
+        isBonusMalus = true;
+        isDiesel = true;
+    }
+    if (document.getElementById('eco').checked == true) {
+        isBonusMalus = false;
+        isEcoFuel = true;
+    }
+
+    // Set up calculations
+    vehicleTax = parseInt(VehicleTaxCalculation(userCarbonInput,userModelYearInput,false,isDiesel,isEcoFuel));
+    vehicleTaxBonusMalus = parseInt(VehicleTaxCalculation(userCarbonInput,userModelYearInput,isBonusMalus,isDiesel,isEcoFuel));
+
+    // Display elements and output to page
+    document.getElementById('results').style.display = "";
+    if (userModelYearInput >= 2018 && isBonusMalus == true) {
+        document.getElementById('tableBonusMalus').style.display = "";
+        document.getElementById('tableVehicleTax').style.display= "none";
+        taxOutputBonusMalus.textContent = vehicleTaxBonusMalus + " kr";
+        taxOutput.textContent = vehicleTax + " kr";
+    }
+    else {
+        document.getElementById('tableBonusMalus').style.display = "none";
+        document.getElementById('tableVehicleTax').style.display= "";
+        taxOutputOld.textContent = vehicleTax + " kr";
+    }
+    
+    // Debug...
+    console.log("Carbon input:", userCarbonInput);
+    console.log("Model year: ", userModelYearInput);
+    console.log("Bonus/Malus: ",isBonusMalus);
+    console.log("Diesel: ",isDiesel);
+    console.log("Eco fuel: ",isEcoFuel);
+}
 </script>
 
 </body>
