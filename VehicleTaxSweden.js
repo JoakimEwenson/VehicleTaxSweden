@@ -37,6 +37,7 @@ function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFu
 
     // Check if vehicle is under the new bonus/malus model
     if (modelYear >= malusModelYear) {
+        // Check if Bonus/Malus-flag is set to true
         if (isBonusMalus) {
             // Get the difference between vehicle carbon output and allowed threshold
             if (carbonOutput > malusComponentLevelHigh) {
@@ -60,6 +61,10 @@ function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFu
 
                 vehicleTax += carbonFee;
             }
+        }
+        // Check if Bonus/Malus-flag is set to false
+        if (!isBonusMalus) {
+            vehicleTax += (carbonOutput - carbonComponentThreshold) * carbonComponent;
         }
         // Check if eco fuel is used and if so, calculate lower taxes
         if (isEcoFuel) {
