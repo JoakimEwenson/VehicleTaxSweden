@@ -35,7 +35,7 @@ function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFu
     // Initialize by setting the vehicle tax to basic fee
     vehicleTax = basicFee;
 
-    // Check if vehicle is under the new bonus/malus model
+    // Check if vehicle is under the new bonus/malus system
     if (modelYear >= malusModelYear) {
         if (isBonusMalus) {
             // Get the difference between vehicle carbon output and allowed threshold
@@ -77,10 +77,10 @@ function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFu
             }
             // Check if vehicle is newer than current level
             if (modelYear >= dieselComponentYear) {
-                dieselComponentFee = dieselComponentFeeLow
+                dieselComponentFee = dieselComponentFeeLow;
             }
             else {
-                dieselComponentFee = dieselComponentFeeHigh
+                dieselComponentFee = dieselComponentFeeHigh;
             }
             vehicleTax += (carbonOutput * dieselFuelFactor) + dieselComponentFee;
         }
@@ -110,7 +110,7 @@ function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFu
             else {
                 dieselComponentFee = dieselComponentFeeHigh
             }
-            vehicleTax = (vehicleTax * dieselMultFactor) + dieselComponentFee
+            vehicleTax += (vehicleTax * dieselMultFactor) + dieselComponentFee
         }
     }
 
