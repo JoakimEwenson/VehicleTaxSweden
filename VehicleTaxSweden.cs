@@ -145,6 +145,6 @@ class VehicleTaxSweden
     // Main method
     static void Main()
     {
-        Console.WriteLine("Hello world!");
+        // TODO: Add some stuff here...
     }
 }
