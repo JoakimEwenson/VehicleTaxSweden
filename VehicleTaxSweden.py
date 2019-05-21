@@ -6,6 +6,7 @@
 # Date: 2019-04-08
 
 # Set up default values for the calculation
+isBonusMalus = False
 isEcoFuel = False
 isDiesel = False
 vehicleTax = 0
@@ -31,34 +32,55 @@ dieselFuelFactor = 13.52        # if newer than 1 july 2018, multiply co2 emissi
 dieselMultFactor = 2.37         # if older than 1 july 2018, multiply total tax by this
 
 # Set up the calculation
-def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
+def VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, dieselFuel, ecoFuel):
+
     # Determine the basic fee as current vehicle tax
     vehicleTax = basicFee
 
     # Check if vehicle is under the bonus/malus system
     if (modelYear >= malusModelYear):
-        # Check if carbon output is over 140 grams per km
-        if (carbonOutput > malusComponentLevelHigh):
-            # Calculate the difference in grams carbon per km
-            malusDifferenceHigh = carbonOutput - malusComponentLevelHigh
-            malusDifferenceLow = (carbonOutput - malusDifferenceHigh) - malusComponentLevelLow
 
-            # Calculate the cost of malus tax
-            malusTaxHigh = malusDifferenceHigh * malusComponentHigh
-            malusTaxLow = malusDifferenceLow * malusComponentLow
+        # Check if Bonus/Malus-flag is set to true
+        if (isBonusMalus == True):
 
-            vehicleTax += malusTaxHigh
-            vehicleTax += malusTaxLow
-        else:
-            carbonDifference = carbonOutput - malusComponentLevelLow
-            carbonFee = carbonDifference * malusComponentLow
-            vehicleTax += carbonFee
+            # Check if carbon output is over 140 grams per km
+            if (carbonOutput > malusComponentLevelHigh):
+
+                # Calculate the difference in grams carbon per km
+                malusDifferenceHigh = carbonOutput - malusComponentLevelHigh
+                malusDifferenceLow = (carbonOutput - malusDifferenceHigh) - malusComponentLevelLow
+
+                # Calculate the cost of malus tax
+                malusTaxHigh = malusDifferenceHigh * malusComponentHigh
+                malusTaxLow = malusDifferenceLow * malusComponentLow
+
+                vehicleTax += malusTaxHigh
+                vehicleTax += malusTaxLow
+            else:
+
+                carbonDifference = carbonOutput - malusComponentLevelLow
+                carbonFee = carbonDifference * malusComponentLow
+                vehicleTax += carbonFee
+
+        # Check if Bonus/Malus-flag is set to false
+        if (isBonusMalus == False):
+
+            vehicleTax += (carbonOutput - carbonComponentLevel) * carbonComponent
+
+        # Check if eco fuel is checked and if so, calculate lower taxes
+        if (isEcoFuel):
+
+            vehicleTax += (carbonOutput - carbonComponentLevel) * carbonComponentEco
+
         # Check if diesel is used and if so, ad additional taxes
         if (dieselFuel):
+
             if (modelYear >= dieselComponentLevel):
                 dieselComponent = dieselComponentLow
+
             else:
                 dieselComponent = dieselComponentHigh
+
             vehicleTax += (carbonOutput * dieselFuelFactor) + dieselComponent
     else:
         # Check if carbon output is above current level
@@ -69,6 +91,7 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
             else:
                 carbonFee = carbonDifference * carbonComponent
             vehicleTax += carbonFee
+
         # Check if diesel is used and if so, ad additional taxes
         if (dieselFuel):
             vehicleTax = (vehicleTax * dieselMultFactor) + dieselComponentLow
@@ -83,6 +106,12 @@ def VehicleTaxCalculation(carbonOutput, modelYear, dieselFuel, ecoFuel):
 # Get user input
 carbonInput = int(input("Antal gram koldioxid per km: "))
 modelYearInput = int(input("Bilens årsmodell: "))
+bonusMalusInput = str(input("Drabbas bilen av bonus/malus-skatt (j/n)? "))
+
+# Check if bonus/malus
+if (bonusMalusInput == 'j' or bonusMalusInput == 'J'):
+    isBonusMalus = True
+
 dieselInput = str(input("Är bilen dieseldriven (j/n)? "))
 # Check if diesel driven and if so, skip question if eco fuel driven
 if (dieselInput == 'j' or dieselInput == 'J'):
@@ -95,4 +124,9 @@ else:
 
 
 # Output result
-print("Årsskatt: " + str(VehicleTaxCalculation(carbonInput,modelYearInput,isDiesel,isEcoFuel)) + " kr")
+if (isBonusMalus == True):
+    print("Årsskatt första tre åren: " + str(VehicleTaxCalculation(carbonInput,modelYearInput,isBonusMalus,isDiesel,isEcoFuel)) + " kr")
+    print("Efterföljande år: " + str(VehicleTaxCalculation(carbonInput,modelYearInput,False,isDiesel,isEcoFuel)) + " kr")
+
+else:
+    print("Årsskatt: " + str(VehicleTaxCalculation(carbonInput,modelYearInput,isBonusMalus,isDiesel,isEcoFuel)) + " kr")

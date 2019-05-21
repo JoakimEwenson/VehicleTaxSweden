@@ -3,6 +3,7 @@
 <html lang="sv">
 
 <title>Fordonsskatteuträkning</title>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="VehicleTaxSweden.js"></script>
@@ -12,7 +13,6 @@
 <div class="w3-container">
     <!-- This section is the form for inputting details regarding the vehicle -->
     <div class="w3-card w3-white w3-padding w3-margin">
-        <h3>Fordonsuppgifter</h3>
         <p>
             <label><b>Antal gram co2 per kilometer</b></label>
             <input class="w3-input w3-border" type="number" name="co2output" id="co2output" placeholder="gram koldioxid per kilometer" required>
@@ -43,7 +43,6 @@
 
     <!-- Results will be displayed after calculations -->
     <div class="w3-card w3-white w3-padding w3-margin" id="results" style="display: none;">
-        <h3>Fordonsskatt</h3>
         <div class="w3-center" id="tableBonusMalus" style="display: none">
             <h4 class="w3-text-dark-gray" style="text-transform:uppercase;">Första tre åren</h4>
             <p class="w3-jumbo" id="vehicleTaxBonusMalus"></p>
@@ -88,7 +87,7 @@ function doTaxCalculation() {
 
     // Set up calculations
     vehicleTax = parseInt(VehicleTaxCalculation(userCarbonInput,userModelYearInput,false,isDiesel,isEcoFuel));
-    vehicleTaxBonusMalus = parseInt(VehicleTaxCalculation(userCarbonInput,userModelYearInput,isBonusMalus,isDiesel,isEcoFuel));
+    vehicleTaxBonusMalus = parseInt(VehicleTaxCalculation(userCarbonInput,userModelYearInput,true,isDiesel,isEcoFuel));
 
     // Display elements and output to page
     document.getElementById('results').style.display = "";
