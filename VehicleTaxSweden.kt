@@ -50,7 +50,10 @@ fun VehicleTaxCalculation(carbonOutput: Int, modelYear: Int, isBonusMalus: Boole
             // Get the difference between vehicle carbon output and allowed threshold
             if (carbonOutput > malusComponentHigh)
             {
-                var malusDiffHigh: Int, malusDiffLow: Int, malusTaxHigh: Int, malusTaxLow: Int
+                var malusDiffHigh: Int
+                var malusDiffLow: Int
+                var malusTaxHigh: Int
+                var malusTaxLow: Int
 
                 // Get the difference between output and highest level
                 malusDiffHigh = carbonOutput - malusComponentHigh
@@ -96,7 +99,7 @@ fun VehicleTaxCalculation(carbonOutput: Int, modelYear: Int, isBonusMalus: Boole
                 dieselComponentFee = dieselComponentHigh
             }
 
-            vehicleTax += (carbonOutput * dieselFuelFactor) + dieselComponentFee
+            vehicleTax += ((carbonOutput * dieselFuelFactor) + dieselComponentFee).toInt()
         }
     }
 
@@ -131,7 +134,7 @@ fun VehicleTaxCalculation(carbonOutput: Int, modelYear: Int, isBonusMalus: Boole
                 dieselComponentFee = dieselComponentHigh
             }
 
-            vehicleTax = (vehicleTax * dieselMultFactor) + dieselComponentFee
+            vehicleTax = ((vehicleTax * dieselMultFactor) + dieselComponentFee).toInt()
         }
     }
 
