@@ -40,7 +40,7 @@
             <label>E85/CNG eller annat miljövänligt alternativ</label>
         </p>
         <div class="w3-container" style="width:100px;margin-left: auto; margin-right: auto;">
-            <input type="submit" class="w3-btn w3-green" onclick="doTaxCalculation()" value="Räkna ut!">
+            <input type="submit" class="w3-button w3-margin w3-green" onclick="doTaxCalculation()" value="RÄKNA UT!">
         </div>
     </div>
 
@@ -108,6 +108,10 @@ function doTaxCalculation() {
         document.getElementById('tableVehicleTax').style.display= "";
         taxOutputOld.textContent = vehicleTax + " kr";
     }
+
+    // Save input data to local storage for later use
+    sessionStorage.setItem('carbonInput',userCarbonInput);
+    sessionStorage.setItem('modelYear', userModelYearInput);
     
     // Debug...
     console.log("Carbon input:", userCarbonInput);
@@ -116,6 +120,11 @@ function doTaxCalculation() {
     console.log("Bonus/Malus: ",isBonusMalus);
     console.log("Diesel: ",isDiesel);
     console.log("Eco fuel: ",isEcoFuel);
+}
+
+window.onload = function() {
+    document.getElementById("co2output").value = sessionStorage.getItem("carbonInput");
+    document.getElementById("modelYear").value = sessionStorage.getItem("modelYear");
 }
 </script>
 
