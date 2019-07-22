@@ -4,7 +4,7 @@
  * https://transportstyrelsen.se/sv/vagtrafik/Fordon/Fordonsskatt/Hur-bestams-skattens-storlek/
  * 
  * Author: Joakim Ewenson
- * Date: 2019-04-11
+ * Date: 2019-07-22
  */
 
 // Set up default values for later use
@@ -30,19 +30,18 @@ const dieselComponentYear = 2008;           // Year (yyyy)
 const dieselFuelFactor = 13.52;             // If newer than 1 july 2018, multiply co2 emission by this
 const dieselMultFactor = 2.37;              // If older than 1 july 2018, multiply total tax by this
 
-// Main calculation
-function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFuel, isEcoFuel) {
-    // Initialize by setting the vehicle tax to basic fee
-    vehicleTax = basicFee;
+int VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFuel, isEcoFuel) {
+  // Initialize by setting the vehicle tax to basic fee
+  vehicleTax = basicFee;
 
-    // Check if vehicle is under the new bonus/malus system
+  // Check if vehicle is under the new bonus/malus system
     if (modelYear >= malusModelYear) {
         // Check if Bonus/Malus-flag is set to true
         if (isBonusMalus) {
             // Get the difference between vehicle carbon output and allowed threshold
             if (carbonOutput > malusComponentLevelHigh) {
                 // Initialize variables
-                var malusDifferenceHigh, malusDifferenceLow, malusTaxHigh, malusTaxLow, carbonDifference, carbonFee;
+                var malusDifferenceHigh, malusDifferenceLow, malusTaxHigh, malusTaxLow;
 
                 // Get the difference between output and high level
                 malusDifferenceHigh = carbonOutput - malusComponentLevelHigh;
@@ -56,8 +55,8 @@ function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFu
                 vehicleTax += malusTaxLow;
             }
             else {
-                carbonDifference = carbonOutput - malusComponentLevelLow;
-                carbonFee = carbonDifference * malusComponentFeeLow;
+                var carbonDifference = carbonOutput - malusComponentLevelLow;
+                var carbonFee = carbonDifference * malusComponentFeeLow;
 
                 vehicleTax += carbonFee;
             }
@@ -97,6 +96,7 @@ function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFu
         var carbonDifference = carbonOutput - carbonComponentThreshold;
         if (carbonDifference > 0) {
             // Check if vehicle use eco fuel and if so, use a lower fee for the calculation
+            var carbonFee = 0;
             if (isEcoFuel) {
                 carbonFee = carbonDifference * carbonComponentEco;
             }
@@ -115,7 +115,7 @@ function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFu
             else {
                 dieselComponentFee = dieselComponentFeeHigh;
             }
-            vehicleTax += (vehicleTax * dieselMultFactor) + dieselComponentFee;
+            vehicleTax += ((vehicleTax * dieselMultFactor) + dieselComponentFee).toInt();
         }
     }
 
@@ -124,6 +124,6 @@ function VehicleTaxCalculation(carbonOutput, modelYear, isBonusMalus, isDieselFu
         vehicleTax = basicFee;
     }
 
-    // Output vehicle tax from function
-    return vehicleTax;
+  // Return vehicle tax from function
+  return vehicleTax;
 }
