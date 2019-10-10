@@ -1,3 +1,12 @@
+/**
+ * A small script to calculate the new tax for road vehicles in Sweden
+ * Data is collected from the following address and is subject to change
+ * https://transportstyrelsen.se/sv/vagtrafik/Fordon/Fordonsskatt/Hur-bestams-skattens-storlek/
+ * 
+ * Author: Joakim Ewenson
+ * Date: 2019-10-10
+ */
+
 // Set up default value for later use
 var vehicleTaxResult = 0
 
