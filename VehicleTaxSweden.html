@@ -11,13 +11,13 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="VehicleTaxSweden.js"></script>
 
-<body class="w3-small w3-light-gray">
+<body class="w3-light-gray">
 
 <div class="w3-container">
     <!-- This section is the form for inputting details regarding the vehicle -->
-    <div class="w3-card w3-white w3-padding w3-margin">
+    <div class="w3-card w3-margin-top w3-white w3-padding" style="max-width: 600px; margin-left: auto; margin-right: auto;">
         <p>
-            <label><b>Antal gram co2 per kilometer</b></label>
+            <label><b>Antal gram co2 per kilometer (blandad k&ouml;rning)</b></label>
             <input class="w3-input w3-border" type="number" name="co2output" id="co2output" placeholder="gram koldioxid per kilometer" required>
         </p>
         <p>
@@ -45,7 +45,7 @@
     </div>
 
     <!-- Results will be displayed after calculations -->
-    <div class="w3-card w3-white w3-padding w3-margin" id="results" style="display: none;">
+    <div id="results" class="w3-card w3-margin-top w3-margin-bottom w3-white w3-padding" style="max-width: 600px; margin-left: auto; margin-right: auto; display: none;">
         <div class="w3-center" id="tableBonusMalus" style="display: none">
             <h4 class="w3-text-dark-gray" style="text-transform:uppercase;">Första tre åren</h4>
             <p class="w3-jumbo" id="vehicleTaxBonusMalus"></p>
@@ -96,7 +96,7 @@ function doTaxCalculation() {
     vehicleTaxBonusMalus = parseInt(VehicleTaxCalculation(userCarbonInput,userModelYearInput,true,isDiesel,isEcoFuel));
 
     // Display elements and output to page
-    document.getElementById('results').style.display = "";
+    document.getElementById('results').style.display = "block";
     if (userModelYearInput >= 2018 && isBonusMalus == true) {
         document.getElementById('tableBonusMalus').style.display = "";
         document.getElementById('tableVehicleTax').style.display= "none";
@@ -114,12 +114,20 @@ function doTaxCalculation() {
     sessionStorage.setItem('modelYear', userModelYearInput);
     
     // Debug...
+    /*
     console.log("Carbon input:", userCarbonInput);
     console.log("Current year:", new Date().getFullYear());
     console.log("Model year: ", userModelYearInput);
     console.log("Bonus/Malus: ",isBonusMalus);
     console.log("Diesel: ",isDiesel);
     console.log("Eco fuel: ",isEcoFuel);
+    */
+}
+
+// Populate form elements with saved data
+window.onload = function() {
+    document.getElementById("co2output").value = sessionStorage.getItem("carbonInput");
+    document.getElementById("modelYear").value = sessionStorage.getItem("modelYear");
 }
 
 window.onload = function() {
