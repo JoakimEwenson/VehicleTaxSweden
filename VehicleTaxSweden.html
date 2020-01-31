@@ -8,57 +8,92 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<script src="VehicleTaxSweden.js"></script>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-<body class="w3-light-gray">
-
-<div class="w3-container">
-    <!-- This section is the form for inputting details regarding the vehicle -->
-    <div class="w3-card w3-margin-top w3-white w3-padding" style="max-width: 600px; margin-left: auto; margin-right: auto;">
-        <p>
-            <label><b>Antal gram co2 per kilometer (blandad k&ouml;rning)</b></label>
-            <input class="w3-input w3-border" type="number" name="co2output" id="co2output" placeholder="gram koldioxid per kilometer" required>
-        </p>
-        <p>
-            <label><b>Fordonets modellår</b></label>
-            <input class="w3-input w3-border" type="number" name="modelYear" id="modelYear" placeholder="YYYY" required>
-        </p>
-        <p>
-            <label><b>Bränsletyp</b></label>
-        </p>
-        <p>
-            <input class="w3-radio" type="radio" name="fuel" id="bensin" value="bensin" checked>
-            <label>Bensin</label>
-        </p>
-        <p>
-            <input class="w3-radio" type="radio" name="fuel" id="diesel" value="diesel">
-            <label>Diesel</label>
-        </p>
-        <p>
-            <input class="w3-radio" type="radio" name="fuel" id="eco" value="eco">
-            <label>E85/CNG eller annat miljövänligt alternativ</label>
-        </p>
-        <div class="w3-container" style="width:100px;margin-left: auto; margin-right: auto;">
-            <input type="submit" class="w3-button w3-margin w3-green" onclick="doTaxCalculation()" value="RÄKNA UT!">
-        </div>
+<body class="bg-dark text-light">
+    <div class="container my-5" style="max-width: 500px;">
+        <!-- This section is the form for inputting details regarding the vehicle -->
+        <form onsubmit="event.preventDefault(); doTaxCalculation();">
+            <div class="form-group">
+                <p>
+                    <label for="co2output"><b>Antal gram co<sub>2</sub> per kilometer</b></label>
+                    <input class="form-control" type="number" name="co2output" id="co2output" placeholder="gram koldioxid per kilometer" required>
+                    <small class="form-text text-muted">Utsläpp vid blandad k&ouml;rning</small>
+                </p>
+            </div>
+            <div class="form-group">
+                <p>
+                    <label for="modelYear"><b>Fordonets modellår</b></label>
+                    <input class="form-control" type="number" name="modelYear" id="modelYear" placeholder="YYYY" required>
+                </p>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <p>
+                        <b>Bränsletyp</b>
+                    </p>
+                    <p>
+                        <input class="form-check-input" type="radio" name="fuel" id="bensin" value="bensin" checked>
+                        <label for="bensin" class="form-check-label">Bensin</label>
+                    </p>
+                    <p>
+                        <input class="form-check-input" type="radio" name="fuel" id="diesel" value="diesel">
+                        <label for="diesel" class="form-check-label">Diesel</label>
+                    </p>
+                    <p>
+                        <input class="form-check-input" type="radio" name="fuel" id="eco" value="eco">
+                        <label for="eco" class="form-check-label">E85/CNG eller annat miljövänligt alternativ</label>
+                    </p>
+                </div>
+            </div>
+            <div class="container mx-auto text-center">
+                <input type="submit" class="btn btn-secondary" onclick="doTaxCalculation()" value="RÄKNA UT!">
+            </div>
+        </form>
     </div>
-
     <!-- Results will be displayed after calculations -->
-    <div id="results" class="w3-card w3-margin-top w3-margin-bottom w3-white w3-padding" style="max-width: 600px; margin-left: auto; margin-right: auto; display: none;">
-        <div class="w3-center" id="tableBonusMalus" style="display: none">
-            <h4 class="w3-text-dark-gray" style="text-transform:uppercase;">Första tre åren</h4>
-            <p class="w3-jumbo" id="vehicleTaxBonusMalus"></p>
-            <h4 class="w3-text-dark-gray" style="text-transform:uppercase;">Efterföljande år</h4>
-            <p class="w3-jumbo" id="vehicleTax"></p>
+    <div id="results" class="container my-5" style="max-width: 500px;">
+        <div class="table-responsive" id="tableBonusMalus" style="display: none">
+            <table class="table table-bordered table-dark">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="text-center">Årlig fordonsskatt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Första tre åren</th>
+                        <td><span id="vehicleTaxBonusMalus"></span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Efterföljande år</th>
+                        <td><span id="vehicleTax"></span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="w3-center" id="tableVehicleTax" style="display: none">
-            <p class="w3-jumbo" id="vehicleTaxOld"></p>
+        <div class="table-responsive" id="tableVehicleTax" style="display: none">
+            <table class="table table-bordered table-dark">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="text-center">Årlig fordonsskatt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center"><span id="vehicleTaxOld"></span></td class="text-center">
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
-
+<!-- Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <!-- JS for the calculations -->
+<script src="VehicleTaxSweden.js"></script>
 <script>
 // Set current year in model year input box as default
 document.getElementById('modelYear').value = new Date().getFullYear();
