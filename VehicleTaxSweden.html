@@ -8,24 +8,29 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="site.webmanifest">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 <body class="bg-dark text-light">
-    <div class="container my-5" style="max-width: 500px;">
+    <div class="container my-2" style="max-width: 500px;">
         <!-- This section is the form for inputting details regarding the vehicle -->
         <form onsubmit="event.preventDefault(); doTaxCalculation();">
             <div class="form-group">
                 <p>
                     <label for="co2output"><b>Antal gram co<sub>2</sub> per kilometer</b></label>
-                    <input class="form-control" type="number" name="co2output" id="co2output" placeholder="gram koldioxid per kilometer" required>
+                    <input class="form-control" type="tel" name="co2output" id="co2output" placeholder="gram koldioxid per kilometer" required>
                     <small class="form-text text-muted">Utsläpp vid blandad k&ouml;rning</small>
                 </p>
             </div>
             <div class="form-group">
                 <p>
                     <label for="modelYear"><b>Fordonets modellår</b></label>
-                    <input class="form-control" type="number" name="modelYear" id="modelYear" placeholder="YYYY" required>
+                    <input class="form-control" type="tel" name="modelYear" id="modelYear" placeholder="YYYY" required>
                 </p>
             </div>
             <div class="form-group">
@@ -53,7 +58,7 @@
         </form>
     </div>
     <!-- Results will be displayed after calculations -->
-    <div id="results" class="container my-5" style="max-width: 500px;">
+    <div id="results" class="container my-2" style="max-width: 500px;">
         <div class="table-responsive" id="tableBonusMalus" style="display: none">
             <table class="table table-bordered table-dark">
                 <thead>
