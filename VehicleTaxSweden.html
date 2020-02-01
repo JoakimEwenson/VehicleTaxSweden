@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 <body class="bg-dark text-light">
-    <div class="container my-2" style="max-width: 500px;">
+    <div class="container my-4" style="max-width: 500px;">
         <!-- This section is the form for inputting details regarding the vehicle -->
         <form onsubmit="event.preventDefault(); doTaxCalculation();">
             <div class="form-group">
@@ -58,12 +58,12 @@
         </form>
     </div>
     <!-- Results will be displayed after calculations -->
-    <div id="results" class="container my-2" style="max-width: 500px;">
+    <div id="results" class="container my-4" style="max-width: 500px;">
         <div class="table-responsive" id="tableBonusMalus" style="display: none">
             <table class="table table-bordered table-dark">
                 <thead>
                     <tr>
-                        <th colspan="2" class="text-center">Årlig fordonsskatt</th>
+                        <th colspan="2" class="text-center">Beräknad fordonsskatt</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,7 +82,7 @@
             <table class="table table-bordered table-dark">
                 <thead>
                     <tr>
-                        <th colspan="2" class="text-center">Årlig fordonsskatt</th>
+                        <th colspan="2" class="text-center">Beräknad fordonsskatt</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -140,13 +140,13 @@ function doTaxCalculation() {
     if (userModelYearInput >= 2018 && isBonusMalus == true) {
         document.getElementById('tableBonusMalus').style.display = "";
         document.getElementById('tableVehicleTax').style.display= "none";
-        taxOutputBonusMalus.textContent = vehicleTaxBonusMalus + " kr";
-        taxOutput.textContent = vehicleTax + " kr";
+        taxOutputBonusMalus.textContent = vehicleTaxBonusMalus + " kr/år";
+        taxOutput.textContent = vehicleTax + " kr/år";
     }
     else {
         document.getElementById('tableBonusMalus').style.display = "none";
         document.getElementById('tableVehicleTax').style.display= "";
-        taxOutputOld.textContent = vehicleTax + " kr";
+        taxOutputOld.textContent = vehicleTax + " kr/år";
     }
 
     // Save input data to local storage for later use
