@@ -23,37 +23,28 @@
             <div class="form-group">
                 <p>
                     <label for="co2output"><b>Antal gram co<sub>2</sub> per kilometer</b></label>
-                    <input class="form-control" type="tel" name="co2output" id="co2output" placeholder="gram koldioxid per kilometer" required>
+                    <input class="form-control form-control-lg" type="tel" name="co2output" id="co2output" placeholder="gram koldioxid per kilometer" required>
                     <small class="form-text text-muted">Utsläpp vid blandad k&ouml;rning</small>
                 </p>
             </div>
             <div class="form-group">
                 <p>
                     <label for="modelYear"><b>Fordonets modellår</b></label>
-                    <input class="form-control" type="tel" name="modelYear" id="modelYear" placeholder="YYYY" required>
+                    <input class="form-control form-control-lg" type="tel" name="modelYear" id="modelYear" placeholder="YYYY" required>
                 </p>
             </div>
             <div class="form-group">
-                <div class="form-check">
-                    <p>
-                        <b>Bränsletyp</b>
-                    </p>
-                    <p>
-                        <input class="form-check-input" type="radio" name="fuel" id="bensin" value="bensin" checked>
-                        <label for="bensin" class="form-check-label">Bensin</label>
-                    </p>
-                    <p>
-                        <input class="form-check-input" type="radio" name="fuel" id="diesel" value="diesel">
-                        <label for="diesel" class="form-check-label">Diesel</label>
-                    </p>
-                    <p>
-                        <input class="form-check-input" type="radio" name="fuel" id="eco" value="eco">
-                        <label for="eco" class="form-check-label">E85/CNG eller annat miljövänligt alternativ</label>
-                    </p>
-                </div>
+                <p>
+                    <label for="fuel"><b>Bränsletyp</b></label>
+                    <select class="form-control form-control-lg" id="fuel">
+                        <option value="bensin">Bensin</option>
+                        <option value="diesel">Diesel</option>
+                        <option value="eco">E85/CNG eller annat miljövänligt alternativ</option>
+                    </select>
+                </p>
             </div>
             <div class="container mx-auto text-center">
-                <input type="submit" class="btn btn-secondary" onclick="doTaxCalculation()" value="RÄKNA UT!">
+                <input type="submit" class="btn btn-secondary my-5" onclick="doTaxCalculation()" value="RÄKNA UT!">
             </div>
         </form>
     </div>
@@ -100,9 +91,6 @@
 <!-- JS for the calculations -->
 <script src="VehicleTaxSweden.js"></script>
 <script>
-// Set current year in model year input box as default
-document.getElementById('modelYear').value = new Date().getFullYear();
-
 function doTaxCalculation() {
     // Set up variables
     var userCarbonInput, userModelYearInput, taxOutput, taxOutputBonusMalus;
@@ -117,16 +105,17 @@ function doTaxCalculation() {
     // Get user input
     userCarbonInput = parseInt(document.getElementById('co2output').value);
     userModelYearInput = parseInt(document.getElementById('modelYear').value);
+    userFuelType = document.getElementById('fuel').value;
 
     // Check type of fuel
-    if (document.getElementById('bensin').checked == true) {
+    if (userFuelType == 'bensin') {
         isBonusMalus = true;
     }
-    if (document.getElementById('diesel').checked == true) {
+    if (userFuelType == 'diesel') {
         isBonusMalus = true;
         isDiesel = true;
     }
-    if (document.getElementById('eco').checked == true) {
+    if (userFuelType == 'eco') {
         isBonusMalus = false;
         isEcoFuel = true;
     }
@@ -150,8 +139,8 @@ function doTaxCalculation() {
     }
 
     // Save input data to local storage for later use
-    sessionStorage.setItem('carbonInput',userCarbonInput);
-    sessionStorage.setItem('modelYear', userModelYearInput);
+    localStorage.setItem('carbonInput',userCarbonInput);
+    localStorage.setItem('modelYear', userModelYearInput);
     
     // Debug...
     /*
@@ -166,13 +155,14 @@ function doTaxCalculation() {
 
 // Populate form elements with saved data
 window.onload = function() {
-    document.getElementById("co2output").value = sessionStorage.getItem("carbonInput");
-    document.getElementById("modelYear").value = sessionStorage.getItem("modelYear");
-}
-
-window.onload = function() {
-    document.getElementById("co2output").value = sessionStorage.getItem("carbonInput");
-    document.getElementById("modelYear").value = sessionStorage.getItem("modelYear");
+    if (localStorage.getItem("carbonInput") && localStorage.getItem("modelYear")) {
+        document.getElementById("co2output").value = localStorage.getItem("carbonInput");
+        document.getElementById("modelYear").value = localStorage.getItem("modelYear");
+    }
+    else {
+        // Set current year in model year input box as default
+        document.getElementById('modelYear').value = new Date().getFullYear();
+    }
 }
 </script>
 
